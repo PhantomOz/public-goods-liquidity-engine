@@ -23,15 +23,22 @@ The Public Goods Liquidity Engine is a production-ready DeFi solution that trans
 ### 🚀 Quick Demo
 
 ```bash
-# Automated 5-minute demo
+# Option 1: Automated interactive demo (recommended)
 export PRIVATE_KEY="your_private_key"
 ./run-demo.sh
 
-# Or verify deployment
+# Option 2: Interactive Solidity script (for judges)
+# Call individual functions to explore specific features
+forge script script/Interactive.s.sol --sig "runFullDemo()" \
+  --rpc-url $TENDERLY_RPC --broadcast --legacy
+
+# Option 3: Verify deployment only
 ./verify-deployment.sh
 ```
 
-See `DEMO_SCRIPT.md` for complete interaction guide and `QUICKSTART.md` for manual steps.
+**For Judges:** See `INTERACTIVE_GUIDE.md` for 25+ functions you can call individually!
+
+See also: `DEMO_SCRIPT.md` for complete interaction guide and `QUICKSTART.md` for manual steps.
 
 ### Key Innovation
 
@@ -452,21 +459,36 @@ MIT License - see LICENSE file for details
 
 ### Demo Quality
 - **One-command demo** - `./run-demo.sh` runs complete flow
-- **Comprehensive documentation** - DEMO_SCRIPT.md covers everything
+- **Interactive testing** - `Interactive.s.sol` with 25+ individual functions for judges
+- **Comprehensive documentation** - 6 detailed guides covering all aspects
 - **Live deployment** - All contracts operational on Tenderly fork
 - **Verification script** - `./verify-deployment.sh` checks all connections
 - **Step-by-step guide** - QUICKSTART.md for manual exploration
+- **Flexible exploration** - Choose automated, guided, or custom testing
 - **Ready for judges** - Complete testing package included
 
-## 📞 Contact & Links
+## � Documentation Hub
+
+| Guide | Purpose | Link |
+|-------|---------|------|
+| **Interactive Guide** | 25+ callable functions for judges to test features individually | `INTERACTIVE_GUIDE.md` |
+| **Complete Demo** | 8-act script with all commands and explanations | `DEMO_SCRIPT.md` |
+| **Quick Start** | 5-minute manual setup guide | `QUICKSTART.md` |
+| **Executive Summary** | Judge-focused overview | `DEMO_SUMMARY.md` |
+| **Deployment Info** | Contract addresses and configuration | `TENDERLY_DEPLOYMENT.md` |
+| **Main README** | Full architecture and specs | This file |
+
+## �📞 Contact & Links
 
 - **GitHub Repository**: [public-goods-liquidity-engine](https://github.com/PhantomOz/public-goods-liquidity-engine)
 - **Demo**: Run `./run-demo.sh` for automated walkthrough
-- **Documentation**: See `DEMO_SCRIPT.md` for complete guide
+- **Interactive Testing**: See `INTERACTIVE_GUIDE.md` for function-by-function exploration
+- **Documentation**: 6 comprehensive guides included
 - **Tenderly Fork**: Chain ID 8 - All contracts deployed and operational
 
 ## 🎯 Quick Links for Judges
 
+- 🎮 **Interactive Functions**: `INTERACTIVE_GUIDE.md` - Test any feature independently!
 - 📖 **Complete Demo Guide**: `DEMO_SCRIPT.md`
 - 🚀 **Quick Start**: `QUICKSTART.md`
 - 📊 **Executive Summary**: `DEMO_SUMMARY.md`
