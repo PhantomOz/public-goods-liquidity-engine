@@ -2,12 +2,27 @@
 
 ## 5-Minute Demo Setup
 
-### Prerequisites
+#### 6. Seed Matching Pool (30 seconds)
 
 ```bash
-# Install foundry if not already installed
+# Approve and add 50 pgDAI to the matching pool
+cast send $VAULT "approve(address,uint256)" $SPLITTER 50000000000000000000 \
+  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
+
+cast send $SPLITTER "addToMatchingPool(uint256)" 50000000000000000000 \
+  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
+```
+
+#### 7. Vote (1 minute)
+
+#### 8. End Round (30 seconds)
+# Calculate QF scores and distribute matching funds automatically
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
+
+# Optional: confirm how much each project received
+cast call $VAULT "balanceOf(address)(uint256)" \
+  0x1111111111111111111111111111111111111111 --rpc-url $TENDERLY_RPC
 
 # Clone and setup
 git clone https://github.com/PhantomOz/public-goods-liquidity-engine
@@ -30,11 +45,12 @@ export TENDERLY_RPC="https://virtual.mainnet.eu.rpc.tenderly.co/82c86106-662e-4d
 
 This will walk you through:
 1. Getting DAI from a whale
-2. Depositing to vault
+2. Depositing to the vault
 3. Deploying to strategies
 4. Registering projects
-5. Voting with quadratic funding
-6. Distributing yield
+5. Starting a funding round and seeding the matching pool
+6. Voting with quadratic funding
+7. Ending the round and distributing yield automatically
 
 ### Option 2: Manual Step-by-Step
 
@@ -82,7 +98,7 @@ cast call $AGGREGATOR "totalDeployed()(uint256)" --rpc-url $TENDERLY_RPC
 #### 4. Register Projects (1 minute)
 
 ```bash
-SPLITTER="0x381D85647AaB3F16EAB7000963D3Ce56792479fD"
+SPLITTER="0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4"
 
 # Register 3 projects
 cast send $SPLITTER 'registerProject(address,string)' \
@@ -105,12 +121,23 @@ cast send $SPLITTER 'registerProject(address,string)' \
 cast send $VAULT "harvest()" \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 
-# Start funding round
-cast send $SPLITTER "startRound()" \
+# Start funding round (7 day duration)
+cast send $SPLITTER "startRound(uint256)" 604800 \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 ```
 
-#### 6. Vote (1 minute)
+#### 6. Seed Matching Pool (30 seconds)
+
+```bash
+# Approve and add 50 pgDAI to the matching pool
+cast send $VAULT "approve(address,uint256)" $SPLITTER 50000000000000000000 \
+  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
+
+cast send $SPLITTER "addToMatchingPool(uint256)" 50000000000000000000 \
+  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
+```
+
+#### 7. Vote (1 minute)
 
 ```bash
 # Vote for projects with pgDAI
@@ -124,18 +151,15 @@ cast send $SPLITTER "vote(uint256,uint256)" 2 20000000000000000000 \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 ```
 
-#### 7. End Round and Distribute (30 seconds)
+#### 8. End Round (30 seconds)
 
 ```bash
-# Calculate QF scores and distribute
+# Calculate QF scores and distribute matching funds automatically
 cast send $SPLITTER "endRound()" \
-  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
-
-cast send $SPLITTER "distribute(uint256)" 1 \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 ```
 
-#### 8. Check Results (30 seconds)
+#### 9. Check Results (30 seconds)
 
 ```bash
 # Check project balances

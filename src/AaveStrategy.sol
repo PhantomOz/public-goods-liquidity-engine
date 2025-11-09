@@ -75,9 +75,10 @@ contract AaveStrategy is Ownable {
     /**
      * @notice Deposit assets into Aave
      * @param amount Amount of assets to deposit
+     * @return shares The amount of shares received (same as amount for this strategy)
      */
-    function deposit(uint256 amount) external onlyVault {
-        if (amount == 0) return;
+    function deposit(uint256 amount) external onlyVault returns (uint256) {
+        if (amount == 0) return 0;
 
         // Transfer assets from vault
         asset.safeTransferFrom(msg.sender, address(this), amount);
@@ -88,6 +89,8 @@ contract AaveStrategy is Ownable {
         totalDeposited += amount;
 
         emit Deposited(amount);
+        
+        return amount; // Return the deposited amount as shares
     }
 
     /**

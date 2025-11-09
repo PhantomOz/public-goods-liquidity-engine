@@ -12,7 +12,7 @@ Successfully deployed complete Public Goods Liquidity Engine system to Tenderly 
 
 | Contract | Address | Size (bytes) | Status |
 |----------|---------|--------------|--------|
-| **QuadraticFundingSplitter** | `0x381D85647AaB3F16EAB7000963D3Ce56792479fD` | 10,397 | ✅ Deployed |
+| **QuadraticFundingSplitter** | `0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4` | 10,397 | ✅ Deployed |
 | **PublicGoodsVault** | `0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680` | 14,659 | ✅ Configured |
 | **YieldAggregator** | `0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2` | 10,499 | ✅ Configured |
 | **AaveStrategy** | `0x2876CC2a624fe603434404d9c10B097b737dE983` | 6,953 | ✅ Configured |
@@ -32,7 +32,7 @@ YieldAggregator (0xB9AC...)
             ↓ (deposits to)
         Spark sDAI (0x83F2...)
 
-QuadraticFundingSplitter (0x381D...)
+QuadraticFundingSplitter (0x3539...)
     ↑ (receives yield shares)
 PublicGoodsVault (0xfA5a...)
 ```

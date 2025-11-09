@@ -115,7 +115,7 @@ An on-chain quadratic funding mechanism that distributes vault shares to project
 - Project registration and management
 - Real-time vote tracking
 
-**Deployed Contract**: `0x381D85647AaB3F16EAB7000963D3Ce56792479fD` (Tenderly Fork)
+**Deployed Contract**: `0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4` (Tenderly Fork)
 
 **Quadratic Funding Formula:**
 ```
@@ -196,7 +196,7 @@ All tests passing with 100% success rate
 | **YieldAggregator** | `0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2` | ✅ Deployed |
 | **AaveStrategy** | `0x2876CC2a624fe603434404d9c10B097b737dE983` | ✅ Deployed |
 | **SparkStrategy** | `0xFd344Cf335F9ee1d5aFe731aa6e50a0BC380E082` | ✅ Deployed |
-| **QuadraticFundingSplitter** | `0x381D85647AaB3F16EAB7000963D3Ce56792479fD` | ✅ Deployed |
+| **QuadraticFundingSplitter** | `0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4` | ✅ Deployed |
 
 **RPC URL**: `https://virtual.mainnet.eu.rpc.tenderly.co/82c86106-662e-4d7f-a974-c311987358ff`
 
@@ -238,11 +238,12 @@ export PRIVATE_KEY="your_private_key_here"
 
 This automated script walks through:
 1. Getting DAI from a whale
-2. Depositing to vault
+2. Depositing to the vault
 3. Deploying to Aave + Spark strategies
 4. Registering public goods projects
-5. Voting with quadratic funding
-6. Distributing yield to projects
+5. Starting a funding round and seeding the matching pool
+6. Voting with quadratic funding
+7. Ending the round and distributing yield automatically
 
 ### Option 2: Manual Step-by-Step
 
@@ -328,25 +329,34 @@ cast send $VAULT "harvest()" \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 ```
 
-5. **Start funding round**:
+5. **Start funding round (7 days)**:
 ```bash
-cast send $SPLITTER "startRound()" \
+cast send $SPLITTER "startRound(uint256)" 604800 \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 ```
 
-6. **Vote for projects**:
+6. **Seed the matching pool (example: 50 pgDAI)**:
+```bash
+cast send $VAULT "approve(address,uint256)" $SPLITTER 50000000000000000000 \
+  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
+
+cast send $SPLITTER "addToMatchingPool(uint256)" 50000000000000000000 \
+  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
+```
+
+7. **Vote for projects**:
 ```bash
 cast send $SPLITTER "vote(uint256,uint256)" $PROJECT_ID $AMOUNT \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 ```
 
-7. **End round and distribute**:
+8. **End round (automatically distributes)**:
 ```bash
 cast send $SPLITTER "endRound()" \
   --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
 
-cast send $SPLITTER "distribute(uint256)" $ROUND_ID \
-  --private-key $PRIVATE_KEY --rpc-url $TENDERLY_RPC --legacy
+cast call $VAULT "balanceOf(address)(uint256)" $PROJECT_ADDRESS \
+  --rpc-url $TENDERLY_RPC
 ```
 
 For complete step-by-step guide, see `QUICKSTART.md`.
@@ -383,7 +393,7 @@ For complete step-by-step guide, see `QUICKSTART.md`.
 | **YieldAggregator** | `0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2` | ✅ Deployed & Verified |
 | **AaveStrategy** | `0x2876CC2a624fe603434404d9c10B097b737dE983` | ✅ Deployed & Verified |
 | **SparkStrategy** | `0xFd344Cf335F9ee1d5aFe731aa6e50a0BC380E082` | ✅ Deployed & Verified |
-| **QuadraticFundingSplitter** | `0x381D85647AaB3F16EAB7000963D3Ce56792479fD` | ✅ Deployed & Verified |
+| **QuadraticFundingSplitter** | `0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4` | ✅ Deployed & Verified |
 
 ### External Protocol Addresses (Mainnet)
 

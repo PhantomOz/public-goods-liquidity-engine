@@ -29,8 +29,9 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract Interactive is Script {
     // Deployed contract addresses (Tenderly Fork)
     address constant VAULT = 0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680;
-    address constant SPLITTER = 0x381D85647AaB3F16EAB7000963D3Ce56792479fD;
-    address constant AGGREGATOR = 0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2;
+    address constant SPLITTER = 0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4;
+    address constant AGGREGATOR = 0x11515c43c025016d2ac8d627889c721ef7042317;
+    uint256 constant DEMO_ROUND_DURATION = 7 days;
     
     // Token addresses (Mainnet)
     address constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
@@ -221,6 +222,30 @@ contract Interactive is Script {
         console.log("");
         console.log("Success! Yield is ready for distribution.");
         
+        vm.stopBroadcast();
+    }
+
+    /**
+     * @notice Initialize harvest baseline so the first harvest does not revert
+     * @dev Keeper should call this right after the initial deposits are in place
+     */
+    function initializeHarvest() external {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+
+        vm.startBroadcast(deployerPrivateKey);
+
+        console.log("==========================================");
+        console.log("ACTION: Initialize Harvest");
+        console.log("==========================================");
+        console.log("");
+
+        uint256 totalAssetsBefore = PublicGoodsVault(VAULT).totalAssets();
+        console.log("Total assets baseline:", totalAssetsBefore / 1e18, "DAI");
+
+        PublicGoodsVault(VAULT).initializeHarvest();
+
+        console.log("Initialization complete. Vault can harvest once yield accrues.");
+
         vm.stopBroadcast();
     }
     
@@ -595,20 +620,24 @@ contract Interactive is Script {
         console.log("==========================================");
         console.log("");
         
-        vm.startBroadcast(deployerPrivateKey);
-        
         // 1. Get DAI
         console.log("Step 1: Getting DAI...");
         vm.startPrank(WHALE);
-        IERC20(DAI).transfer(user, 10_000 * 1e18);
+        IERC20(DAI).transfer(user, 12_000 * 1e18);
         vm.stopPrank();
-        console.log("  Got 10,000 DAI");
+        console.log("  Got 12,000 DAI");
+        
+        vm.startBroadcast(deployerPrivateKey);
         
         // 2. Deposit to vault
         console.log("Step 2: Depositing to vault...");
         IERC20(DAI).approve(VAULT, 10_000 * 1e18);
         PublicGoodsVault(VAULT).deposit(10_000 * 1e18, user);
         console.log("  Deposited 10,000 DAI");
+        
+        // Initialize harvest baseline after first deposit
+        PublicGoodsVault(VAULT).initializeHarvest();
+        console.log("  Harvest baseline initialized");
         
         // 3. Deploy to strategies
         console.log("Step 3: Deploying to strategies...");
@@ -636,28 +665,38 @@ contract Interactive is Script {
         
         // 5. Harvest yield (simulate)
         console.log("Step 5: Harvesting yield...");
+        console.log("  Simulating yield accrual...");
+        IERC20(DAI).transfer(AGGREGATOR, 1 * 1e18);
+        console.log("  Injected 1 DAI into aggregator");
         PublicGoodsVault(VAULT).harvest();
         console.log("  Yield harvested");
         
-        // 6. Add to matching pool
-        console.log("Step 6: Adding to matching pool...");
-        IERC20(VAULT).approve(SPLITTER, 50 * 1e18);
-        QuadraticFundingSplitter(SPLITTER).addToMatchingPool(50 * 1e18);
-        console.log("  Added 50 pgDAI to matching pool");
-        
-        // 7. Start round
-        console.log("Step 7: Starting funding round...");
-        QuadraticFundingSplitter(SPLITTER).startRound(7 days);
+    // 6. Start round
+    console.log("Step 6: Starting funding round...");
+    QuadraticFundingSplitter(SPLITTER).startRound(DEMO_ROUND_DURATION);
         console.log("  Round started");
         
-        // 8. Vote
-        console.log("Step 8: Voting for projects...");
+    // 7. Add to matching pool
+    console.log("Step 7: Adding to matching pool...");
+    IERC20(VAULT).approve(SPLITTER, 50 * 1e18);
+    QuadraticFundingSplitter(SPLITTER).addToMatchingPool(50 * 1e18);
+    console.log("  Added 50 pgDAI to matching pool");
+
+    // 8. Vote
+    console.log("Step 8: Voting for projects...");
         IERC20(VAULT).approve(SPLITTER, 100 * 1e18);
         QuadraticFundingSplitter(SPLITTER).vote(0, 50 * 1e18);
         QuadraticFundingSplitter(SPLITTER).vote(1, 30 * 1e18);
         QuadraticFundingSplitter(SPLITTER).vote(2, 20 * 1e18);
         console.log("  Voted for all projects");
         
+    // Fast-forward past the round duration so the demo can end the round immediately
+    vm.stopBroadcast();
+    vm.warp(block.timestamp + DEMO_ROUND_DURATION + 1);
+    vm.roll(block.number + 1);
+    vm.startBroadcast(deployerPrivateKey);
+    console.log("  Advanced chain time beyond round duration");
+
         // 9. End round and distribute
         console.log("Step 9: Ending round (this also distributes funds)...");
         QuadraticFundingSplitter(SPLITTER).endRound();

@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 # Configuration
 export TENDERLY_RPC="https://virtual.mainnet.eu.rpc.tenderly.co/82c86106-662e-4d7f-a974-c311987358ff"
 export VAULT="0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680"
-export SPLITTER="0x381D85647AaB3F16EAB7000963D3Ce56792479fD"
+export SPLITTER="0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4"
 export AGGREGATOR="0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2"
 export AAVE_STRATEGY="0x2876CC2a624fe603434404d9c10B097b737dE983"
 export SPARK_STRATEGY="0xFd344Cf335F9ee1d5aFe731aa6e50a0BC380E082"
@@ -208,8 +208,9 @@ cast send $SPLITTER \
   > /dev/null 2>&1
 echo -e "   ${GREEN}✓ Registered${NC}"
 
-PROJECT_COUNT=$(cast call $SPLITTER "getProjectCount()(uint256)" --rpc-url $TENDERLY_RPC)
-echo -e "\nTotal projects: $(format_amount $PROJECT_COUNT)"
+PROJECT_COUNT_HEX=$(cast call $SPLITTER "getProjectCount()(uint256)" --rpc-url $TENDERLY_RPC)
+PROJECT_COUNT=$((PROJECT_COUNT_HEX))
+echo -e "\nTotal projects: $PROJECT_COUNT"
 
 pause_demo
 
@@ -231,9 +232,10 @@ SPLITTER_BAL=$(cast call $VAULT "balanceOf(address)(uint256)" $SPLITTER --rpc-ur
 echo -e "${GREEN}✓ Yield harvested${NC}"
 echo "  Splitter balance: $(format_amount $SPLITTER_BAL) pgDAI"
 
-echo -e "\nStarting funding round 1..."
+echo -e "\nStarting funding round 1 (7-day duration)..."
 cast send $SPLITTER \
-  "startRound()" \
+  "startRound(uint256)" \
+  604800 \
   --private-key $PRIVATE_KEY \
   --rpc-url $TENDERLY_RPC \
   --legacy \
@@ -242,6 +244,28 @@ cast send $SPLITTER \
 CURRENT_ROUND=$(cast call $SPLITTER "currentRound()(uint256)" --rpc-url $TENDERLY_RPC)
 echo -e "${GREEN}✓ Round started${NC}"
 echo "  Round number: $CURRENT_ROUND"
+
+echo -e "\nSeeding matching pool with 50 pgDAI..."
+cast send $VAULT \
+  "approve(address,uint256)" \
+  $SPLITTER \
+  50000000000000000000 \
+  --private-key $PRIVATE_KEY \
+  --rpc-url $TENDERLY_RPC \
+  --legacy \
+  > /dev/null 2>&1
+
+cast send $SPLITTER \
+  "addToMatchingPool(uint256)" \
+  50000000000000000000 \
+  --private-key $PRIVATE_KEY \
+  --rpc-url $TENDERLY_RPC \
+  --legacy \
+  > /dev/null 2>&1
+
+MATCHING_POOL=$(cast call $SPLITTER "matchingPools(uint256)(uint256)" $CURRENT_ROUND --rpc-url $TENDERLY_RPC)
+echo -e "${GREEN}✓ Matching pool funded${NC}"
+echo "  Pool balance: $(format_amount $MATCHING_POOL) pgDAI"
 
 pause_demo
 
@@ -307,17 +331,6 @@ cast send $SPLITTER \
 
 echo -e "${GREEN}✓ Round ended${NC}"
 echo "  Quadratic funding scores calculated"
-
-echo -e "\nDistributing funds to projects..."
-cast send $SPLITTER \
-  "distribute(uint256)" \
-  1 \
-  --private-key $PRIVATE_KEY \
-  --rpc-url $TENDERLY_RPC \
-  --legacy \
-  > /dev/null 2>&1
-
-echo -e "${GREEN}✓ Funds distributed${NC}"
 
 PROJECT1_BAL=$(cast call $VAULT "balanceOf(address)(uint256)" 0x1111111111111111111111111111111111111111 --rpc-url $TENDERLY_RPC)
 PROJECT2_BAL=$(cast call $VAULT "balanceOf(address)(uint256)" 0x2222222222222222222222222222222222222222 --rpc-url $TENDERLY_RPC)

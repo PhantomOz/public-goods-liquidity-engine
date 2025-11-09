@@ -434,7 +434,7 @@ All amounts use **wei** (18 decimals):
 All contracts are **live** on Tenderly Mainnet Fork:
 
 - **Vault:** `0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680`
-- **Splitter:** `0x381D85647AaB3F16EAB7000963D3Ce56792479fD`
+- **Splitter:** `0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4`
 - **Aggregator:** `0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2`
 - **DAI:** `0x6B175474E89094C44Da98b954EedeAC495271d0F`
 

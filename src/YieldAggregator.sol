@@ -110,11 +110,14 @@ contract YieldAggregator is Ownable, ReentrancyGuard {
         uint256 sparkAmount = amount - aaveAmount;
 
         // Deposit to strategies
+        uint256 aaveShares = 0;
+        uint256 sparkShares = 0;
+        
         if (aaveAmount > 0) {
-            aaveStrategy.deposit(aaveAmount);
+            aaveShares = aaveStrategy.deposit(aaveAmount);
         }
         if (sparkAmount > 0) {
-            sparkStrategy.deposit(sparkAmount);
+            sparkShares = sparkStrategy.deposit(sparkAmount);
         }
 
         emit Deposited(amount, aaveAmount, sparkAmount);

@@ -9,7 +9,7 @@ This script demonstrates the full lifecycle of the platform: from user deposits,
 ## Setup: Deployed Contracts
 
 ```
-QuadraticFundingSplitter: 0x381D85647AaB3F16EAB7000963D3Ce56792479fD
+QuadraticFundingSplitter: 0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4
 PublicGoodsVault:         0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680
 YieldAggregator:          0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2
 AaveStrategy:             0x2876CC2a624fe603434404d9c10B097b737dE983
@@ -153,7 +153,7 @@ cast call $VAULT "getYield()(uint256)" --rpc-url $TENDERLY_RPC
 ### Scene 6: Register 3 Demo Projects
 
 ```bash
-export SPLITTER="0x381D85647AaB3F16EAB7000963D3Ce56792479fD"
+export SPLITTER="0x35391ca5F9bEb7f4488671fCbad0Ee709603Fec4"
 
 # Register Project 1: Open Source Library
 cast send $SPLITTER \
@@ -206,9 +206,10 @@ cast send $VAULT \
 # Check vault shares (pgDAI) balance in splitter
 cast call $VAULT "balanceOf(address)(uint256)" $SPLITTER --rpc-url $TENDERLY_RPC
 
-# Start new funding round
+# Start new funding round (7 day duration)
 cast send $SPLITTER \
-  "startRound()" \
+  "startRound(uint256)" \
+  604800 \
   --private-key $PRIVATE_KEY \
   --rpc-url $TENDERLY_RPC \
   --legacy
@@ -216,9 +217,25 @@ cast send $SPLITTER \
 # Check current round
 cast call $SPLITTER "currentRound()(uint256)" --rpc-url $TENDERLY_RPC
 # Expected: 1
+
+# Top up the matching pool with pgDAI (required before ending the round)
+cast send $VAULT \
+  "approve(address,uint256)" \
+  $SPLITTER \
+  50000000000000000000 \
+  --private-key $PRIVATE_KEY \
+  --rpc-url $TENDERLY_RPC \
+  --legacy
+
+cast send $SPLITTER \
+  "addToMatchingPool(uint256)" \
+  50000000000000000000 \
+  --private-key $PRIVATE_KEY \
+  --rpc-url $TENDERLY_RPC \
+  --legacy
 ```
 
-**Demo Point**: *"Yield has been harvested and a new funding round begins. Community members can now vote on project allocation."*
+**Demo Point**: *"Yield has been harvested, the round is open, and we’ve seeded the matching pool so community voting can allocate funds."*
 
 ---
 
@@ -275,7 +292,7 @@ cast call $SPLITTER "getProjectVotes(uint256,uint256)(uint256)" 2 1 --rpc-url $T
 ### Scene 9: Calculate QF Scores and Distribute
 
 ```bash
-# End the round and calculate quadratic funding scores
+# End the round, calculate quadratic funding scores, and distribute matching pool
 cast send $SPLITTER \
   "endRound()" \
   --private-key $PRIVATE_KEY \
@@ -291,14 +308,6 @@ cast call $SPLITTER "getProjectScore(uint256,uint256)(uint256)" 1 1 --rpc-url $T
 
 echo "=== Project 2 QF Score ==="
 cast call $SPLITTER "getProjectScore(uint256,uint256)(uint256)" 2 1 --rpc-url $TENDERLY_RPC
-
-# Distribute funds to projects
-cast send $SPLITTER \
-  "distribute(uint256)" \
-  1 \
-  --private-key $PRIVATE_KEY \
-  --rpc-url $TENDERLY_RPC \
-  --legacy
 
 # Check project balances
 echo "=== Project 0 Received ==="
@@ -394,10 +403,9 @@ cast call $VAULT "getIdleBalance()(uint256)" --rpc-url $TENDERLY_RPC
 3. ✅ Yield accumulates → ~2-5% APY from both protocols
 4. ✅ 3 Projects register → Web3 Security, Carbon Offset, DeFi Education
 5. ✅ Harvest yield → ~100-200 DAI collected
-6. ✅ Start funding round → Round 1 begins
-7. ✅ Community votes → Allocate pgDAI to favorite projects
-8. ✅ Calculate QF scores → Quadratic formula applied
-9. ✅ Distribute funds → Projects receive proportional shares
+6. ✅ Start funding round → Round 1 begins (7 day window)
+7. ✅ Seed matching pool & vote → 50 pgDAI added, community allocates support
+8. ✅ End round → Quadratic scores calculated and funds distributed automatically
 10. ✅ Projects redeem → Convert pgDAI to DAI for operations
 ```
 
