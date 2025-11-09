@@ -455,10 +455,8 @@ contract Interactive is Script {
         console.log("");
         
         // Vault stats
-        uint256 totalAssets = PublicGoodsVault(VAULT).totalAssets();
         uint256 totalSupply = IERC20(VAULT).totalSupply();
         console.log("VAULT STATS");
-        console.log("  Total Assets:", totalAssets / 1e18, "DAI");
         console.log("  Total Shares:", totalSupply / 1e18, "pgDAI");
         console.log("");
         
