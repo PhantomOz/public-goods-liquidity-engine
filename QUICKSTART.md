@@ -10,7 +10,7 @@ curl -L https://foundry.paradigm.xyz | bash
 foundryup
 
 # Clone and setup
-git clone <your-repo>
+git clone https://github.com/PhantomOz/public-goods-liquidity-engine
 cd public-goods-liquidity-engine
 ```
 
