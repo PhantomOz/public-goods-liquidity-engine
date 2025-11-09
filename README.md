@@ -1,25 +1,27 @@
 # Public Goods Liquidity Engine
 
-**A yield-donating DeFi vault with quadratic funding for sustainable public goods financing**
+**A multi-protocol yield-donating DeFi vault with quadratic funding for sustainable public goods financing**
 
 ## 🏆 Hackathon Submission - Octant DeFi Hackathon 2025
 
 ### Tracks Targeted
 
 ✅ **Best Public Goods Projects** - Advanced mechanism for public goods funding with quadratic allocation  
-✅ **Best use of Yield Donating Strategy** - ERC-4626 vault that donates 100% of yield to allocation mechanism  
-✅ **Most creative use of Octant v2** - Innovative combination of yield generation and quadratic funding  
-✅ **Best use of a Yield Donating Strategy** - Sophisticated yield routing to community-governed allocation
+✅ **Best use of Aave v3** - Multi-asset yield generation via Aave lending markets ($2,500 prize)  
+✅ **Best use of Spark** - DAI yield generation via Spark's sDAI vault ($1,500 prize)  
+✅ **Best use of Yield Donating Strategy** - ERC-4626 vault that donates 100% of yield  
+✅ **Most creative use of Octant v2** - Innovative combination of multi-protocol yield and quadratic funding
 
 ## 🎯 Project Overview
 
-The Public Goods Liquidity Engine is a comprehensive DeFi solution that transforms idle capital into sustainable funding for public goods. By combining ERC-4626 compliant yield-donating vaults with a quadratic funding allocation mechanism, we create a perpetual funding stream that democratizes resource allocation while preserving principal deposits.
+The Public Goods Liquidity Engine is a comprehensive DeFi solution that transforms idle capital into sustainable funding for public goods. By combining ERC-4626 compliant yield-donating vaults with **dual-protocol yield strategies (Aave + Spark)** and a quadratic funding allocation mechanism, we create a perpetual funding stream that democratizes resource allocation while preserving principal deposits.
 
 ### Key Innovation
 
 Unlike traditional donation models, our system:
 - **Preserves 100% of principal** - Depositors can withdraw their full deposit anytime
-- **Donates 100% of yield** - All generated returns flow to public goods
+- **Donates 100% of yield** - All generated returns from Aave and Spark flow to public goods
+- **Multi-protocol diversification** - Splits deposits across Aave and Spark for risk management
 - **Democratizes allocation** - Quadratic funding ensures community voice matters more than capital
 - **Creates perpetual funding** - As long as deposits remain, public goods receive continuous support
 
@@ -31,6 +33,7 @@ A yield-donating vault that implements the Octant v2 model:
 
 **Key Features:**
 - Full ERC-4626 compliance for maximum composability
+- Integrated with YieldAggregator for multi-protocol yield generation
 - All yield minted as shares and transferred to allocation address
 - Configurable keeper for automated harvest operations
 - Emergency pause functionality for security
@@ -40,13 +43,30 @@ A yield-donating vault that implements the Octant v2 model:
 **How it Works:**
 ```solidity
 1. Users deposit assets → receive vault shares
-2. Assets generate yield (simulated or via strategy)
-3. Keeper calls harvest() → yield converted to new shares
-4. New shares minted to allocation address (splitter)
-5. Users retain original shares and can withdraw anytime
+2. Keeper deposits assets to YieldAggregator → splits across Aave & Spark
+3. Both protocols generate yield (lending APY + incentives)
+4. Keeper calls harvest() → aggregates yield from both sources
+5. Yield converted to new vault shares
+6. New shares minted to allocation address (splitter)
+7. Users retain original shares and can withdraw anytime
 ```
 
-### 2. QuadraticFundingSplitter
+### 2. YieldAggregator (Multi-Strategy Coordinator)
+
+Manages deposits across multiple yield-generating protocols:
+
+**Key Features:**
+- Configurable allocation between Aave and Spark (e.g., 50/50, 70/30)
+- Rebalancing functionality to maintain target allocations
+- Aggregates harvest operations from both strategies
+- Unified interface for vault integration
+- Emergency withdrawal capability
+
+**Supported Strategies:**
+- **AaveStrategy**: Deposits assets into Aave v3 lending pools
+- **SparkStrategy**: Deposits DAI into Spark's sDAI (Savings DAI) vault
+
+### 3. QuadraticFundingSplitter
 
 An on-chain quadratic funding mechanism that distributes vault shares to projects based on community support:
 
