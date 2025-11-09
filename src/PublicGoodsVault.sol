@@ -9,6 +9,18 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
+ * @title IYieldAggregator
+ * @notice Interface for yield aggregator
+ */
+interface IYieldAggregator {
+    function deposit(uint256 amount) external returns (uint256, uint256);
+    function withdraw(uint256 amount, address recipient) external returns (uint256);
+    function harvest() external returns (uint256);
+    function totalAssets() external view returns (uint256);
+    function currentYield() external view returns (uint256);
+}
+
+/**
  * @title PublicGoodsVault
  * @notice ERC-4626 compliant yield-donating vault for Octant v2
  * @dev All generated yield is minted as shares and transferred to an allocation address
@@ -26,8 +38,8 @@ contract PublicGoodsVault is ERC4626, Ownable, ReentrancyGuard {
     /// @notice Emergency admin for crisis situations
     address public emergencyAdmin;
 
-    /// @notice Strategy contract that generates yield
-    address public strategy;
+    /// @notice YieldAggregator contract that manages multiple yield strategies
+    address public yieldAggregator;
 
     /// @notice Total assets tracked at last harvest
     uint256 public lastHarvestedAssets;
@@ -48,7 +60,7 @@ contract PublicGoodsVault is ERC4626, Ownable, ReentrancyGuard {
     event AllocationAddressUpdated(address indexed oldAddress, address indexed newAddress);
     event KeeperUpdated(address indexed oldKeeper, address indexed newKeeper);
     event EmergencyAdminUpdated(address indexed oldAdmin, address indexed newAdmin);
-    event StrategyUpdated(address indexed oldStrategy, address indexed newStrategy);
+    event YieldAggregatorUpdated(address indexed oldAggregator, address indexed newAggregator);
     event YieldHarvested(uint256 yieldAmount, uint256 sharesMinted, uint256 feeAmount);
     event PerformanceFeeUpdated(uint256 oldFee, uint256 newFee);
     event FeeRecipientUpdated(address indexed oldRecipient, address indexed newRecipient);
@@ -61,6 +73,7 @@ contract PublicGoodsVault is ERC4626, Ownable, ReentrancyGuard {
     error InvalidFee();
     error VaultPaused();
     error NoYieldGenerated();
+    error InsufficientBalance();
 
     modifier onlyKeeper() {
         if (msg.sender != keeper && msg.sender != owner()) revert Unauthorized();
@@ -106,12 +119,14 @@ contract PublicGoodsVault is ERC4626, Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Total assets under management including strategy deployment
+     * @notice Total assets under management including yield aggregator deployment
      */
     function totalAssets() public view override returns (uint256) {
         uint256 vaultBalance = IERC20(asset()).balanceOf(address(this));
-        uint256 strategyBalance = strategy != address(0) ? IERC20(asset()).balanceOf(strategy) : 0;
-        return vaultBalance + strategyBalance;
+        uint256 aggregatorBalance = yieldAggregator != address(0) 
+            ? IYieldAggregator(yieldAggregator).totalAssets() 
+            : 0;
+        return vaultBalance + aggregatorBalance;
     }
 
     /**
@@ -133,6 +148,11 @@ contract PublicGoodsVault is ERC4626, Ownable, ReentrancyGuard {
      * @dev Called by keeper to realize profits and distribute as donations
      */
     function harvest() external onlyKeeper nonReentrant returns (uint256 yieldAmount) {
+        // Harvest from yield aggregator if configured
+        if (yieldAggregator != address(0)) {
+            IYieldAggregator(yieldAggregator).harvest();
+        }
+
         // Get current total assets
         uint256 currentAssets = totalAssets();
 
@@ -197,13 +217,19 @@ contract PublicGoodsVault is ERC4626, Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Set the strategy contract
-     * @param _strategy New strategy address
+     * @notice Set the yield aggregator
+     * @param _aggregator New yield aggregator address
      */
-    function setStrategy(address _strategy) external onlyOwner {
-        address oldStrategy = strategy;
-        strategy = _strategy;
-        emit StrategyUpdated(oldStrategy, _strategy);
+    function setYieldAggregator(address _aggregator) external onlyOwner {
+        address oldAggregator = yieldAggregator;
+        yieldAggregator = _aggregator;
+        
+        // Approve aggregator to spend vault assets
+        if (_aggregator != address(0)) {
+            IERC20(asset()).approve(_aggregator, type(uint256).max);
+        }
+        
+        emit YieldAggregatorUpdated(oldAggregator, _aggregator);
     }
 
     /**
@@ -245,6 +271,31 @@ contract PublicGoodsVault is ERC4626, Ownable, ReentrancyGuard {
     function emergencyWithdraw(address token, uint256 amount) external onlyEmergencyAdmin {
         IERC20(token).safeTransfer(emergencyAdmin, amount);
         emit EmergencyWithdraw(token, amount);
+    }
+
+    /**
+     * @notice Deposit assets into yield aggregator
+     * @param amount Amount to deposit into strategies
+     */
+    function depositToStrategies(uint256 amount) external onlyKeeper nonReentrant {
+        if (yieldAggregator == address(0)) revert InvalidAddress();
+        if (amount == 0) return;
+        
+        uint256 vaultBalance = IERC20(asset()).balanceOf(address(this));
+        if (amount > vaultBalance) revert InsufficientBalance();
+        
+        IYieldAggregator(yieldAggregator).deposit(amount);
+    }
+
+    /**
+     * @notice Withdraw assets from yield aggregator
+     * @param amount Amount to withdraw from strategies
+     */
+    function withdrawFromStrategies(uint256 amount) external onlyKeeper nonReentrant {
+        if (yieldAggregator == address(0)) revert InvalidAddress();
+        if (amount == 0) return;
+        
+        IYieldAggregator(yieldAggregator).withdraw(amount, address(this));
     }
 
     /**
