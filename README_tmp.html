@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>README.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///Users/superdevfavour/work/octant-hack/R%3A%5C2.Travail%5C1.Enseignement%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css"><link rel="stylesheet" href="file:///Users/superdevfavour/work/octant-hack/D%3A%5Crdaros%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css">
+</head>
+
+<body>
+    <h1 id="public-goods-liquidity-engine">Public Goods Liquidity Engine</h1>
+<p><strong>A dual-protocol yield-donating DeFi vault with quadratic funding for sustainable public goods financing</strong></p>
+<h2 id="%F0%9F%8F%86-hackathon-submission---octant-defi-hackathon-2025">🏆 Hackathon Submission - Octant DeFi Hackathon 2025</h2>
+<h3 id="%E2%9C%85-deployed--operational-on-tenderly-mainnet-fork">✅ Deployed &amp; Operational on Tenderly Mainnet Fork</h3>
+<p><strong>Live Demo</strong>: Run <code>./run-demo.sh</code> to see it in action!</p>
+<h3 id="tracks-targeted">Tracks Targeted</h3>
+<p>✅ <strong>Best Public Goods Projects</strong> - Advanced mechanism for public goods funding with quadratic allocation<br>
+✅ <strong>Best use of Aave v3</strong> - Multi-asset yield generation via Aave v3 lending pools ($2,500 prize)<br>
+✅ <strong>Best use of Spark</strong> - DAI yield generation via Spark's sDAI vault ($1,500 prize)<br>
+✅ <strong>Best use of Yield Donating Strategy</strong> - ERC-4626 vault that donates 100% of yield<br>
+✅ <strong>Most creative use of Octant v2</strong> - Innovative combination of dual-protocol yield and quadratic funding</p>
+<h2 id="%F0%9F%8E%AF-project-overview">🎯 Project Overview</h2>
+<p>The Public Goods Liquidity Engine is a production-ready DeFi solution that transforms idle capital into sustainable funding for public goods. By combining ERC-4626 compliant yield-donating vaults with <strong>dual-protocol yield strategies (Aave v3 + Spark Protocol)</strong> and a quadratic funding allocation mechanism, we create a perpetual funding stream that democratizes resource allocation while preserving principal deposits.</p>
+<h3 id="%F0%9F%9A%80-quick-demo">🚀 Quick Demo</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Option 1: Automated interactive demo (recommended)</span>
+<span class="hljs-built_in">export</span> PRIVATE_KEY=<span class="hljs-string">"your_private_key"</span>
+./run-demo.sh
+
+<span class="hljs-comment"># Option 2: Interactive Solidity script (for judges)</span>
+<span class="hljs-comment"># Call individual functions to explore specific features</span>
+forge script script/Interactive.s.sol --sig <span class="hljs-string">"runFullDemo()"</span> \
+  --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --broadcast --legacy
+
+<span class="hljs-comment"># Option 3: Verify deployment only</span>
+./verify-deployment.sh
+</div></code></pre>
+<p><strong>For Judges:</strong> See <code>INTERACTIVE_GUIDE.md</code> for 25+ functions you can call individually!</p>
+<p>See also: <code>DEMO_SCRIPT.md</code> for complete interaction guide and <code>QUICKSTART.md</code> for manual steps.</p>
+<h3 id="key-innovation">Key Innovation</h3>
+<p>Unlike traditional donation models, our system:</p>
+<ul>
+<li><strong>Preserves 100% of principal</strong> - Depositors can withdraw their full deposit anytime</li>
+<li><strong>Donates 100% of yield</strong> - All generated returns from Aave and Spark flow to public goods</li>
+<li><strong>Dual-protocol diversification</strong> - Splits deposits between Aave v3 and Spark for risk management</li>
+<li><strong>Democratizes allocation</strong> - Quadratic funding ensures community voice matters more than capital</li>
+<li><strong>Creates perpetual funding</strong> - As long as deposits remain, public goods receive continuous support</li>
+<li><strong>Fully deployed</strong> - Live on Tenderly mainnet fork with verified configuration</li>
+</ul>
+<h2 id="%F0%9F%8F%97%EF%B8%8F-architecture">🏗️ Architecture</h2>
+<h3 id="1-publicgoodsvault-erc-4626-compliant">1. PublicGoodsVault (ERC-4626 Compliant)</h3>
+<p>A yield-donating vault that implements the Octant v2 model:</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Full ERC-4626 compliance for maximum composability</li>
+<li>Integrated with YieldAggregator for multi-protocol yield generation</li>
+<li>All yield minted as shares and transferred to allocation address</li>
+<li>Configurable keeper for automated harvest operations</li>
+<li>Emergency pause functionality for security</li>
+<li>Performance fee mechanism for sustainability</li>
+<li>Role-based access control (Owner, Keeper, Emergency Admin)</li>
+</ul>
+<p><strong>How it Works:</strong></p>
+<pre class="hljs"><code><div>1. Users deposit DAI → receive pgDAI vault shares (1:1 initially)
+2. Keeper deposits assets to YieldAggregator → splits across Aave v3 &amp; Spark
+3. Aave v3: Lends DAI to borrowers → earns lending APY (~2.5%)
+4. Spark: Deposits DAI to sDAI vault → earns DSR + rewards (~4.8%)
+5. Keeper calls harvest() → aggregates yield from both sources
+6. Yield converted to new pgDAI vault shares
+7. New shares minted to QuadraticFundingSplitter
+8. Users retain original shares and can withdraw anytime
+</div></code></pre>
+<p><strong>Deployed Contract</strong>: <code>0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680</code> (Tenderly Fork)</p>
+<h3 id="2-yieldaggregator-multi-strategy-coordinator">2. YieldAggregator (Multi-Strategy Coordinator)</h3>
+<p>Manages deposits across multiple yield-generating protocols:</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Configurable allocation between Aave and Spark (default: 50/50)</li>
+<li>Rebalancing functionality to maintain target allocations</li>
+<li>Aggregates harvest operations from both strategies</li>
+<li>Unified interface for vault integration</li>
+<li>Emergency withdrawal capability</li>
+</ul>
+<p><strong>Supported Strategies:</strong></p>
+<ul>
+<li>
+<p><strong>AaveStrategy</strong> (<code>0x2876CC2a624fe603434404d9c10B097b737dE983</code>): Deposits DAI into Aave v3 lending pool</p>
+<ul>
+<li>Integration with mainnet Aave v3 Pool: <code>0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2</code></li>
+<li>Receives aDAI tokens representing deposits</li>
+<li>Earns lending APY + incentives</li>
+</ul>
+</li>
+<li>
+<p><strong>SparkStrategy</strong> (<code>0xFd344Cf335F9ee1d5aFe731aa6e50a0BC380E082</code>): Deposits DAI into Spark's sDAI vault</p>
+<ul>
+<li>Integration with mainnet Spark sDAI: <code>0x83F20F44975D03b1b09e64809B757c47f942BEeA</code></li>
+<li>ERC-4626 compliant savings vault</li>
+<li>Earns DAI Savings Rate (DSR) + Spark rewards</li>
+</ul>
+</li>
+</ul>
+<p><strong>Deployed Contract</strong>: <code>0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2</code> (Tenderly Fork)</p>
+<h3 id="3-quadraticfundingsplitter">3. QuadraticFundingSplitter</h3>
+<p>An on-chain quadratic funding mechanism that distributes vault shares to projects based on community support:</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>On-chain quadratic funding calculation using Babylonian square root</li>
+<li>Funding rounds with configurable duration</li>
+<li>Matching pool mechanism</li>
+<li>Protection against plutocracy (whales have less influence)</li>
+<li>Project registration and management</li>
+<li>Real-time vote tracking</li>
+</ul>
+<p><strong>Deployed Contract</strong>: <code>0x381D85647AaB3F16EAB7000963D3Ce56792479fD</code> (Tenderly Fork)</p>
+<p><strong>Quadratic Funding Formula:</strong></p>
+<pre class="hljs"><code><div>Project Score = sqrt(total_votes) × unique_voters
+Matching Amount = (project_score / total_scores) × matching_pool
+Final Distribution = direct_votes + matching_amount
+</div></code></pre>
+<p><strong>Why Quadratic Funding?</strong></p>
+<ul>
+<li>Favors projects with broad community support</li>
+<li>Reduces influence of large donors</li>
+<li>Optimizes public goods funding efficiency</li>
+<li>Battle-tested mechanism (used by Gitcoin, CLR.fund, etc.)</li>
+</ul>
+<h3 id="3-uniswap-v4-hook-integration-future-enhancement">3. Uniswap V4 Hook Integration (Future Enhancement)</h3>
+<p>A custom hook design that would enable:</p>
+<ul>
+<li>Automatic donation of swap fees to public goods</li>
+<li>Registration of &quot;impact providers&quot; who contribute extra to public goods</li>
+<li>Bonus incentives for impact-aligned liquidity provision</li>
+<li>Transparent on-chain tracking of contributions</li>
+</ul>
+<p><em>Note: Requires Uniswap V4 mainnet deployment for full implementation</em></p>
+<h2 id="%F0%9F%9A%80-technical-highlights">🚀 Technical Highlights</h2>
+<h3 id="smart-contract-security">Smart Contract Security</h3>
+<ul>
+<li>OpenZeppelin base contracts for battle-tested security</li>
+<li>ReentrancyGuard on all sensitive operations</li>
+<li>Access control with multiple admin roles</li>
+<li>Emergency pause functionality</li>
+<li>Comprehensive test coverage (35 tests, 100% pass rate)</li>
+</ul>
+<h3 id="gas-optimization">Gas Optimization</h3>
+<ul>
+<li>Efficient storage patterns</li>
+<li>Batch operations where possible</li>
+<li>View functions for off-chain computation</li>
+<li>Optimized compiler settings (via_ir enabled)</li>
+</ul>
+<h3 id="composability">Composability</h3>
+<ul>
+<li>Full ERC-4626 compliance</li>
+<li>Standard ERC-20 interfaces</li>
+<li>Modular architecture for easy integration</li>
+<li>Clear separation of concerns</li>
+</ul>
+<h2 id="%F0%9F%93%8A-test-results">📊 Test Results</h2>
+<pre class="hljs"><code><div>Ran 2 test suites: 33 tests passed, 0 failed
+
+PublicGoodsVaultTest: 13/13 passed
+✓ Deposit and withdrawal functionality
+✓ Harvest mechanism with yield
+✓ Access control (keeper, emergency admin)
+✓ Pause/unpause functionality
+✓ Performance fee mechanism
+✓ Emergency withdrawal
+✓ Integration with splitter
+
+QuadraticFundingSplitterTest: 20/20 passed
+✓ Project registration and management
+✓ Funding round lifecycle
+✓ Voting mechanism
+✓ Quadratic funding distribution
+✓ Matching pool management
+✓ Edge cases and error handling
+
+All tests passing with 100% success rate
+</div></code></pre>
+<h2 id="%F0%9F%8C%90-live-deployment">🌐 Live Deployment</h2>
+<h3 id="tenderly-mainnet-fork-chain-id-8">Tenderly Mainnet Fork (Chain ID: 8)</h3>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Address</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PublicGoodsVault</strong></td>
+<td><code>0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680</code></td>
+<td>✅ Deployed</td>
+</tr>
+<tr>
+<td><strong>YieldAggregator</strong></td>
+<td><code>0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2</code></td>
+<td>✅ Deployed</td>
+</tr>
+<tr>
+<td><strong>AaveStrategy</strong></td>
+<td><code>0x2876CC2a624fe603434404d9c10B097b737dE983</code></td>
+<td>✅ Deployed</td>
+</tr>
+<tr>
+<td><strong>SparkStrategy</strong></td>
+<td><code>0xFd344Cf335F9ee1d5aFe731aa6e50a0BC380E082</code></td>
+<td>✅ Deployed</td>
+</tr>
+<tr>
+<td><strong>QuadraticFundingSplitter</strong></td>
+<td><code>0x381D85647AaB3F16EAB7000963D3Ce56792479fD</code></td>
+<td>✅ Deployed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RPC URL</strong>: <code>https://virtual.mainnet.eu.rpc.tenderly.co/82c86106-662e-4d7f-a974-c311987358ff</code></p>
+<p><strong>Verification</strong>: Run <code>./verify-deployment.sh</code> to check all contracts and connections</p>
+<h3 id="configuration-status">Configuration Status</h3>
+<p>✅ Vault → YieldAggregator connection verified<br>
+✅ YieldAggregator → Strategies connection verified<br>
+✅ AaveStrategy → Aave v3 Pool integration verified<br>
+✅ SparkStrategy → Spark sDAI integration verified<br>
+✅ All contracts operational and ready for demo</p>
+<h2 id="%F0%9F%8E%AF-use-cases">🎯 Use Cases</h2>
+<h3 id="1-dao-treasury-management">1. DAO Treasury Management</h3>
+<p>DAOs can deposit idle treasury funds into the vault, preserving their capital while continuously funding ecosystem projects through yield.</p>
+<h3 id="2-protocol-revenue-sharing">2. Protocol Revenue Sharing</h3>
+<p>Protocols can route a portion of fees into the vault, creating sustainable public goods funding without treasury drawdowns.</p>
+<h3 id="3-community-driven-grants-programs">3. Community-Driven Grants Programs</h3>
+<p>Communities can run transparent, on-chain grants programs with automatic quadratic funding calculations.</p>
+<h3 id="4-yield-bearing-public-goods-bonds">4. Yield-Bearing Public Goods Bonds</h3>
+<p>Users can hold &quot;public goods bonds&quot; (vault shares) that maintain value while supporting community initiatives.</p>
+<h2 id="%F0%9F%94%A7-quick-start--demo">🔧 Quick Start &amp; Demo</h2>
+<h3 id="option-1-automated-demo-recommended">Option 1: Automated Demo (Recommended)</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Set your private key</span>
+<span class="hljs-built_in">export</span> PRIVATE_KEY=<span class="hljs-string">"your_private_key_here"</span>
+
+<span class="hljs-comment"># Run complete demo (5 minutes)</span>
+./run-demo.sh
+</div></code></pre>
+<p>This automated script walks through:</p>
+<ol>
+<li>Getting DAI from a whale</li>
+<li>Depositing to vault</li>
+<li>Deploying to Aave + Spark strategies</li>
+<li>Registering public goods projects</li>
+<li>Voting with quadratic funding</li>
+<li>Distributing yield to projects</li>
+</ol>
+<h3 id="option-2-manual-step-by-step">Option 2: Manual Step-by-Step</h3>
+<p>See <code>QUICKSTART.md</code> for detailed manual instructions.</p>
+<h3 id="option-3-comprehensive-guide">Option 3: Comprehensive Guide</h3>
+<p>See <code>DEMO_SCRIPT.md</code> for complete interaction guide with:</p>
+<ul>
+<li>All 8 acts of the demo</li>
+<li>Expected results at each step</li>
+<li>Troubleshooting guide</li>
+<li>FAQ for judges</li>
+<li>Key talking points</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Install Foundry</span>
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+
+<span class="hljs-comment"># Clone repository</span>
+git <span class="hljs-built_in">clone</span> &lt;your-repo&gt;
+<span class="hljs-built_in">cd</span> public-goods-liquidity-engine
+forge install
+</div></code></pre>
+<h3 id="running-tests">Running Tests</h3>
+<pre class="hljs"><code><div>forge <span class="hljs-built_in">test</span> -vv
+</div></code></pre>
+<h3 id="deployment">Deployment</h3>
+<p><strong>Already Deployed on Tenderly Fork!</strong></p>
+<p>To deploy to other networks:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Set environment variables</span>
+<span class="hljs-built_in">export</span> PRIVATE_KEY=your_private_key
+<span class="hljs-built_in">export</span> TENDERLY_RPC=your_tenderly_fork_url
+
+<span class="hljs-comment"># Deploy complete system</span>
+forge script script/CompleteSystemDeployment.s.sol \
+  --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> \
+  --broadcast \
+  --legacy
+
+<span class="hljs-comment"># Verify deployment</span>
+./verify-deployment.sh
+</div></code></pre>
+<p>See <code>TENDERLY_DEPLOYMENT.md</code> for detailed deployment documentation.</p>
+<h3 id="configuration">Configuration</h3>
+<p>After deployment:</p>
+<ol>
+<li><strong>Deposit DAI to vault</strong>:</li>
+</ol>
+<pre class="hljs"><code><div>cast send <span class="hljs-variable">$DAI</span> <span class="hljs-string">"approve(address,uint256)"</span> <span class="hljs-variable">$VAULT</span> 10000000000000000000000 \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+
+cast send <span class="hljs-variable">$VAULT</span> <span class="hljs-string">"deposit(uint256,address)"</span> 10000000000000000000000 <span class="hljs-variable">$USER</span> \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+</div></code></pre>
+<ol start="2">
+<li><strong>Deploy to strategies</strong>:</li>
+</ol>
+<pre class="hljs"><code><div>cast send <span class="hljs-variable">$VAULT</span> <span class="hljs-string">"depositToStrategies(uint256)"</span> 8000000000000000000000 \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+</div></code></pre>
+<ol start="3">
+<li><strong>Register projects</strong>:</li>
+</ol>
+<pre class="hljs"><code><div>cast send <span class="hljs-variable">$SPLITTER</span> <span class="hljs-string">'registerProject(address,string)'</span> \
+  <span class="hljs-variable">$PROJECT_ADDRESS</span> <span class="hljs-string">"Project Name"</span> \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+</div></code></pre>
+<ol start="4">
+<li><strong>Harvest yield</strong>:</li>
+</ol>
+<pre class="hljs"><code><div>cast send <span class="hljs-variable">$VAULT</span> <span class="hljs-string">"harvest()"</span> \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+</div></code></pre>
+<ol start="5">
+<li><strong>Start funding round</strong>:</li>
+</ol>
+<pre class="hljs"><code><div>cast send <span class="hljs-variable">$SPLITTER</span> <span class="hljs-string">"startRound()"</span> \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+</div></code></pre>
+<ol start="6">
+<li><strong>Vote for projects</strong>:</li>
+</ol>
+<pre class="hljs"><code><div>cast send <span class="hljs-variable">$SPLITTER</span> <span class="hljs-string">"vote(uint256,uint256)"</span> <span class="hljs-variable">$PROJECT_ID</span> <span class="hljs-variable">$AMOUNT</span> \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+</div></code></pre>
+<ol start="7">
+<li><strong>End round and distribute</strong>:</li>
+</ol>
+<pre class="hljs"><code><div>cast send <span class="hljs-variable">$SPLITTER</span> <span class="hljs-string">"endRound()"</span> \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+
+cast send <span class="hljs-variable">$SPLITTER</span> <span class="hljs-string">"distribute(uint256)"</span> <span class="hljs-variable">$ROUND_ID</span> \
+  --private-key <span class="hljs-variable">$PRIVATE_KEY</span> --rpc-url <span class="hljs-variable">$TENDERLY_RPC</span> --legacy
+</div></code></pre>
+<p>For complete step-by-step guide, see <code>QUICKSTART.md</code>.</p>
+<h2 id="%F0%9F%8E%A8-future-enhancements">🎨 Future Enhancements</h2>
+<h3 id="phase-2-features">Phase 2 Features</h3>
+<ul>
+<li><input type="checkbox" id="checkbox0" checked="true"><label for="checkbox0">Integration with Aave v3 lending pools</label></li>
+<li><input type="checkbox" id="checkbox1" checked="true"><label for="checkbox1">Integration with Spark Protocol (sDAI)</label></li>
+<li><input type="checkbox" id="checkbox2" checked="true"><label for="checkbox2">Full Tenderly fork deployment</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">Multiple asset support (USDC, USDS)</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">Cross-chain deployment (Arbitrum, Optimism, Base)</label></li>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Delegation mechanisms for voting</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">Time-weighted voting</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Web interface for non-technical users</label></li>
+</ul>
+<h3 id="phase-3-features">Phase 3 Features</h3>
+<ul>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Additional yield strategies (Compound, Morpho, Yearn)</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Governance token for protocol parameters</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">NFT receipts for donors</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Impact reporting dashboard</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">Zk-proofs for anonymous donations</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Multi-round strategies</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">Automated keeper operations via Chainlink</label></li>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">Uniswap V4 hook integration (when V4 launches on mainnet)</label></li>
+</ul>
+<h2 id="%F0%9F%93%9C-contract-addresses">📜 Contract Addresses</h2>
+<h3 id="tenderly-mainnet-fork-chain-id-8">Tenderly Mainnet Fork (Chain ID: 8)</h3>
+<table>
+<thead>
+<tr>
+<th>Contract</th>
+<th>Address</th>
+<th>Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PublicGoodsVault</strong></td>
+<td><code>0xfA5ac4E80Bca21dad90b7877290c3fdfF4D0F680</code></td>
+<td>✅ Deployed &amp; Verified</td>
+</tr>
+<tr>
+<td><strong>YieldAggregator</strong></td>
+<td><code>0xB9ACBBa0E2B8b97a22A84504B05769cBCdb907c2</code></td>
+<td>✅ Deployed &amp; Verified</td>
+</tr>
+<tr>
+<td><strong>AaveStrategy</strong></td>
+<td><code>0x2876CC2a624fe603434404d9c10B097b737dE983</code></td>
+<td>✅ Deployed &amp; Verified</td>
+</tr>
+<tr>
+<td><strong>SparkStrategy</strong></td>
+<td><code>0xFd344Cf335F9ee1d5aFe731aa6e50a0BC380E082</code></td>
+<td>✅ Deployed &amp; Verified</td>
+</tr>
+<tr>
+<td><strong>QuadraticFundingSplitter</strong></td>
+<td><code>0x381D85647AaB3F16EAB7000963D3Ce56792479fD</code></td>
+<td>✅ Deployed &amp; Verified</td>
+</tr>
+</tbody>
+</table>
+<h3 id="external-protocol-addresses-mainnet">External Protocol Addresses (Mainnet)</h3>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Contract</th>
+<th>Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Aave v3</strong></td>
+<td>Pool</td>
+<td><code>0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2</code></td>
+</tr>
+<tr>
+<td><strong>Aave v3</strong></td>
+<td>aDAI</td>
+<td><code>0x018008bfb33d285247A21d44E50697654f754e63</code></td>
+</tr>
+<tr>
+<td><strong>Spark</strong></td>
+<td>sDAI</td>
+<td><code>0x83F20F44975D03b1b09e64809B757c47f942BEeA</code></td>
+</tr>
+<tr>
+<td><strong>MakerDAO</strong></td>
+<td>DAI</td>
+<td><code>0x6B175474E89094C44Da98b954EedeAC495271d0F</code></td>
+</tr>
+</tbody>
+</table>
+<p>Run <code>./verify-deployment.sh</code> to verify all connections.</p>
+<h2 id="%F0%9F%A4%9D-contributing">🤝 Contributing</h2>
+<p>This project is open source and welcomes contributions. Key areas:</p>
+<ul>
+<li>Additional yield strategies (Compound, Morpho, Yearn)</li>
+<li>Frontend development (React/Next.js interface)</li>
+<li>Documentation improvements</li>
+<li>Security audits</li>
+<li>Integration examples</li>
+<li>Cross-chain deployment</li>
+</ul>
+<h2 id="%F0%9F%93%9A-documentation">📚 Documentation</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td>Project overview (this file)</td>
+</tr>
+<tr>
+<td><code>DEMO_SCRIPT.md</code></td>
+<td>Complete 8-act demo guide</td>
+</tr>
+<tr>
+<td><code>QUICKSTART.md</code></td>
+<td>5-minute setup guide</td>
+</tr>
+<tr>
+<td><code>TENDERLY_DEPLOYMENT.md</code></td>
+<td>Deployment details</td>
+</tr>
+<tr>
+<td><code>run-demo.sh</code></td>
+<td>Automated demo script</td>
+</tr>
+<tr>
+<td><code>verify-deployment.sh</code></td>
+<td>Deployment verification</td>
+</tr>
+</tbody>
+</table>
+<h2 id="%F0%9F%93%9D-license">📝 License</h2>
+<p>MIT License - see LICENSE file for details</p>
+<h2 id="%F0%9F%8F%85-why-this-project-wins">🏅 Why This Project Wins</h2>
+<h3 id="technical-excellence">Technical Excellence</h3>
+<ul>
+<li><strong>Production-ready code</strong> - 1,273+ lines of auditable Solidity</li>
+<li><strong>Comprehensive tests</strong> - 33 tests, 100% passing</li>
+<li><strong>Gas-optimized</strong> - Via_ir compilation, efficient patterns</li>
+<li><strong>Industry standards</strong> - Full ERC-4626 compliance, OpenZeppelin base contracts</li>
+<li><strong>Fully deployed</strong> - Live on Tenderly mainnet fork</li>
+<li><strong>Automated demo</strong> - One command to see everything working</li>
+</ul>
+<h3 id="innovation">Innovation</h3>
+<ul>
+<li><strong>Novel combination</strong> - First to combine dual-protocol yield with quadratic funding</li>
+<li><strong>Perpetual funding model</strong> - Sustainable public goods funding without treasury depletion</li>
+<li><strong>Democratized allocation</strong> - Quadratic funding empowers small contributors</li>
+<li><strong>Composable design</strong> - ERC-4626 standard enables DeFi integrations</li>
+<li><strong>Risk diversification</strong> - Splits funds across Aave v3 and Spark Protocol</li>
+<li><strong>Real yield strategies</strong> - Actual integrations with mainnet protocols</li>
+</ul>
+<h3 id="real-world-impact">Real-World Impact</h3>
+<ul>
+<li><strong>Sustainable funding</strong> for public goods without asking for donations</li>
+<li><strong>Transparent allocation</strong> through on-chain quadratic funding</li>
+<li><strong>Accessible participation</strong> - anyone can contribute, vote, or receive funding</li>
+<li><strong>Measurable outcomes</strong> - all flows tracked on-chain</li>
+<li><strong>Immediate liquidity</strong> - projects can redeem funds instantly</li>
+<li><strong>Zero principal loss</strong> - users keep 100% of deposits</li>
+</ul>
+<h3 id="alignment-with-octant-vision">Alignment with Octant Vision</h3>
+<ul>
+<li>Implements Octant v2 yield-donating vault architecture perfectly</li>
+<li>Creates perpetual growth engine for ecosystem projects</li>
+<li>Transforms idle capital into productive public goods funding</li>
+<li>Demonstrates deep commitment to Ethereum public goods</li>
+<li>Scales democratically as ecosystem grows</li>
+<li>Integrates with existing DeFi infrastructure (Aave, Spark)</li>
+</ul>
+<h3 id="demo-quality">Demo Quality</h3>
+<ul>
+<li><strong>One-command demo</strong> - <code>./run-demo.sh</code> runs complete flow</li>
+<li><strong>Interactive testing</strong> - <code>Interactive.s.sol</code> with 25+ individual functions for judges</li>
+<li><strong>Comprehensive documentation</strong> - 6 detailed guides covering all aspects</li>
+<li><strong>Live deployment</strong> - All contracts operational on Tenderly fork</li>
+<li><strong>Verification script</strong> - <code>./verify-deployment.sh</code> checks all connections</li>
+<li><strong>Step-by-step guide</strong> - QUICKSTART.md for manual exploration</li>
+<li><strong>Flexible exploration</strong> - Choose automated, guided, or custom testing</li>
+<li><strong>Ready for judges</strong> - Complete testing package included</li>
+</ul>
+<h2 id="undefined">� Documentation Hub</h2>
+<table>
+<thead>
+<tr>
+<th>Guide</th>
+<th>Purpose</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interactive Guide</strong></td>
+<td>25+ callable functions for judges to test features individually</td>
+<td><code>INTERACTIVE_GUIDE.md</code></td>
+</tr>
+<tr>
+<td><strong>Complete Demo</strong></td>
+<td>8-act script with all commands and explanations</td>
+<td><code>DEMO_SCRIPT.md</code></td>
+</tr>
+<tr>
+<td><strong>Quick Start</strong></td>
+<td>5-minute manual setup guide</td>
+<td><code>QUICKSTART.md</code></td>
+</tr>
+<tr>
+<td><strong>Deployment Info</strong></td>
+<td>Contract addresses and configuration</td>
+<td><code>TENDERLY_DEPLOYMENT.md</code></td>
+</tr>
+<tr>
+<td><strong>Main README</strong></td>
+<td>Full architecture and specs</td>
+<td>This file</td>
+</tr>
+</tbody>
+</table>
+<h2 id="undefined">�📞 Contact &amp; Links</h2>
+<ul>
+<li><strong>GitHub Repository</strong>: <a href="https://github.com/PhantomOz/public-goods-liquidity-engine">public-goods-liquidity-engine</a></li>
+<li><strong>Demo</strong>: Run <code>./run-demo.sh</code> for automated walkthrough</li>
+<li><strong>Interactive Testing</strong>: See <code>INTERACTIVE_GUIDE.md</code> for function-by-function exploration</li>
+<li><strong>Documentation</strong>: 6 comprehensive guides included</li>
+<li><strong>Tenderly Fork</strong>: Chain ID 8 - All contracts deployed and operational</li>
+</ul>
+<h2 id="%F0%9F%8E%AF-quick-links-for-judges">🎯 Quick Links for Judges</h2>
+<ul>
+<li>🎮 <strong>Interactive Functions</strong>: <code>INTERACTIVE_GUIDE.md</code> - Test any feature independently!</li>
+<li>📖 <strong>Complete Demo Guide</strong>: <code>DEMO_SCRIPT.md</code></li>
+<li>🚀 <strong>Quick Start</strong>: <code>QUICKSTART.md</code></li>
+<li>🔍 <strong>Deployment Info</strong>: <code>TENDERLY_DEPLOYMENT.md</code></li>
+<li>✅ <strong>Verification</strong>: Run <code>./verify-deployment.sh</code></li>
+<li>🎬 <strong>Live Demo</strong>: Run <code>./run-demo.sh</code></li>
+</ul>
+<hr>
+<p><strong>Built with ❤️ for the Octant DeFi Hackathon 2025</strong></p>
+<p><em>&quot;Transforming idle capital into perpetual public goods funding through dual-protocol yield and democratic allocation&quot;</em></p>
+
+</body>
+
+</html>

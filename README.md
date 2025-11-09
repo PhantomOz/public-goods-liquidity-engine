@@ -414,7 +414,6 @@ This project is open source and welcomes contributions. Key areas:
 | `README.md` | Project overview (this file) |
 | `DEMO_SCRIPT.md` | Complete 8-act demo guide |
 | `QUICKSTART.md` | 5-minute setup guide |
-| `DEMO_SUMMARY.md` | Executive summary |
 | `TENDERLY_DEPLOYMENT.md` | Deployment details |
 | `run-demo.sh` | Automated demo script |
 | `verify-deployment.sh` | Deployment verification |
@@ -474,7 +473,6 @@ MIT License - see LICENSE file for details
 | **Interactive Guide** | 25+ callable functions for judges to test features individually | `INTERACTIVE_GUIDE.md` |
 | **Complete Demo** | 8-act script with all commands and explanations | `DEMO_SCRIPT.md` |
 | **Quick Start** | 5-minute manual setup guide | `QUICKSTART.md` |
-| **Executive Summary** | Judge-focused overview | `DEMO_SUMMARY.md` |
 | **Deployment Info** | Contract addresses and configuration | `TENDERLY_DEPLOYMENT.md` |
 | **Main README** | Full architecture and specs | This file |
 
@@ -491,7 +489,6 @@ MIT License - see LICENSE file for details
 - 🎮 **Interactive Functions**: `INTERACTIVE_GUIDE.md` - Test any feature independently!
 - 📖 **Complete Demo Guide**: `DEMO_SCRIPT.md`
 - 🚀 **Quick Start**: `QUICKSTART.md`
-- 📊 **Executive Summary**: `DEMO_SUMMARY.md`
 - 🔍 **Deployment Info**: `TENDERLY_DEPLOYMENT.md`
 - ✅ **Verification**: Run `./verify-deployment.sh`
 - 🎬 **Live Demo**: Run `./run-demo.sh`
